@@ -14,6 +14,7 @@ rule "Hello World"
         //系统输出和重新设置实体属性
         System.out.println("rule \"Hellow World printMsg\": " + printMsg );
         m.setMessage( "Goodbye~" );
+        console("    Hello World     ");
         m.setStatus( Message.GOODBYE );
         //更新实体，会重新触发规则
         update( m );
@@ -26,3 +27,7 @@ rule "GoodBye"
     then
         System.out.println("rule \"GoodBye printMsg\":" + printMsg );
 end
+
+function void console(String t){
+    System.out.println(t + "console");
+}

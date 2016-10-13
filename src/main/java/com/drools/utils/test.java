@@ -9,6 +9,7 @@ import org.kie.api.runtime.KieSession;
  * Created by LANCHUNQIAN on 2016/10/13.
  */
 public class test {
+
     public static void main(String[] args) {
 
         //从工厂中获得KieServices实例
