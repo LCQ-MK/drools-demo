@@ -1,6 +1,11 @@
 package com.drools.utils;
 
 import com.drools.entity.Message;
+import com.sun.xml.internal.ws.addressing.v200408.MemberSubmissionWsaServerTube;
+import org.drools.core.RuleBaseConfiguration;
+import org.drools.core.WorkingMemory;
+import org.drools.core.audit.event.RuleBaseLogEvent;
+import org.drools.core.marshalling.impl.RuleBaseNodes;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -18,6 +23,12 @@ public class test {
         KieContainer kieContainer = kieServices.getKieClasspathContainer();
         //建立KieSession到规则文件的通信管道
         KieSession kSession = kieContainer.newKieSession("ksession-rules");
+
+        //初始化全局变量messageGlobal
+        Message messageGlobal = new Message();
+        messageGlobal.setMessage("I am global message!");
+        kSession.setGlobal("messageGlobal",messageGlobal);
+
         Message message = new Message();
         message.setMessage("Hello World");
         message.setStatus(Message.HELLO);

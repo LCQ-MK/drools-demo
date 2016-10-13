@@ -3,6 +3,8 @@ package com.drools.org.drools.rules
 //导入自定义的实体类
 import com.drools.entity.Message
 
+global Message messageGlobal
+
 //规则名
 rule "Hello World"
     //条件语句
@@ -11,10 +13,25 @@ rule "Hello World"
         m : Message( status == Message.HELLO, printMsg : message )
     //满足条件之后要做的事情
     then
+        System.out.println("Hello World -------------------------------------");
         //系统输出和重新设置实体属性
-        System.out.println("rule \"Hellow World printMsg\": " + printMsg );
+        System.out.println("rule \"Hello World printMsg\": " + printMsg );
         m.setMessage( "Goodbye~" );
-        console("    Hello World     ");
+        //函数调用
+        console("rule \"Hello World\"");
+
+        Message message2=new Message();
+        message2.setMessage("I am message2!");
+        System.out.println(message2.getMessage());
+
+        //global 的使用
+        System.out.println("rule \"Hello World\"  origin messageGlobal is " + messageGlobal.getMessage());
+        messageGlobal.setMessage("I am global message, I have been changed");
+        System.out.println("rule \"Hello World\" " + messageGlobal.getMessage());
+
+        //类的使用
+        People people = new People();
+        System.out.println("People info: " + people);
         m.setStatus( Message.GOODBYE );
         //更新实体，会重新触发规则
         update( m );
@@ -25,9 +42,23 @@ rule "GoodBye"
     when
         Message( status == Message.GOODBYE, printMsg : message )
     then
+        System.out.println("GoodBye --------------------------------------");
         System.out.println("rule \"GoodBye printMsg\":" + printMsg );
+        System.out.println("rule \"GoodBye printMsg\":" + messageGlobal.getMessage());
 end
 
+//函数使用
 function void console(String t){
     System.out.println(t + "console");
 }
+
+//类
+declare People
+    @author(LanChunqian)
+    @createTime(2016-10-13)
+
+    name:String @maxLengh(100)
+    city:String @maxLength(200)
+    phone:int
+end
+
