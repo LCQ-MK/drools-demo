@@ -9,8 +9,12 @@ public class Message {
     public static final int GOODBYE = 1;
 
     private String message;
-    private String ttMessage;
     private int status;
+
+    public Message(String message, int status){
+        this.message = message;
+        this.status = status;
+    }
 
     public String getMessage() {
         return this.message;
@@ -19,10 +23,6 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    public String getTtMessage() { return ttMessage; }
-
-    public void setTtMessage(String ttMessage) { this.ttMessage = ttMessage; }
 
     public int getStatus() {
         return this.status;

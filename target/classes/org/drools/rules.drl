@@ -2,8 +2,11 @@ package com.drools.org.drools.rules
 
 //导入自定义的实体类
 import com.drools.entity.Message
+import com.drools.entity.People
+import java.util.List;
 
-global Message messageGlobal
+global String name;
+global List<People> peopleGlobal;
 
 //规则名
 rule "Hello World"
@@ -13,39 +16,46 @@ rule "Hello World"
         m : Message( status == Message.HELLO, printMsg : message )
     //满足条件之后要做的事情
     then
-        System.out.println("Hello World -------------------------------------");
+        System.out.println("\nHello World -------------------------------------");
         //系统输出和重新设置实体属性
         System.out.println("rule \"Hello World printMsg\": " + printMsg );
-        m.setMessage( "Goodbye~" );
+
         //函数调用
         console("rule \"Hello World\"");
 
-        Message message2=new Message();
-        message2.setMessage("I am message2!");
+        Message message2=new Message("rule \"Hello World printMsg\": I am message2 and I an created in rule Hello World!", 2);
         System.out.println(message2.getMessage());
 
-        //global 的使用
-        System.out.println("rule \"Hello World\"  origin messageGlobal is " + messageGlobal.getMessage());
-        messageGlobal.setMessage("I am global message, I have been changed");
-        System.out.println("rule \"Hello World\" " + messageGlobal.getMessage());
+        //declare 类的使用
+        DrlClass drlClass = new DrlClass();
+        drlClass.setClassID(123);
+        drlClass.setClassName("dirClass Onne");
+        System.out.println("rule \"Hello World printMsg\": DrlClass info: " + drlClass);
 
-        //类的使用
-        People people = new People();
-        System.out.println("People info: " + people);
+        m.setMessage( "Goodbye~" );
         m.setStatus( Message.GOODBYE );
         //更新实体，会重新触发规则
         update( m );
-end
+    end
 
 //第二个规则
 rule "GoodBye"
     when
         Message( status == Message.GOODBYE, printMsg : message )
     then
-        System.out.println("GoodBye --------------------------------------");
+        System.out.println("\nGoodBye --------------------------------------");
         System.out.println("rule \"GoodBye printMsg\":" + printMsg );
-        System.out.println("rule \"GoodBye printMsg\":" + messageGlobal.getMessage());
-end
+    end
+
+//第三个规则 全局变量的使用
+rule "Age Filter"
+    when
+        $p : People(age > 20);
+    then
+        name = $p.getName();
+        System.out.println("rule \"Age Filter printMsg\" 年龄大于20的人：" + name);
+        peopleGlobal.add($p);
+     end
 
 //函数使用
 function void console(String t){
@@ -53,12 +63,17 @@ function void console(String t){
 }
 
 //类
-declare People
-    @author(LanChunqian)
+declare DrlClass
+    @author (LanChunqian)
     @createTime(2016-10-13)
 
-    name:String @maxLengh(100)
-    city:String @maxLength(200)
-    phone:int
+    classID:int @key
+    className:String @maxLength(100) @key
 end
+
+//query的使用
+query "people over the age of x"  (int x, int y)
+    people : People( age > x, phone == y )
+end
+
 
