@@ -16,6 +16,8 @@ public class Message {
         this.status = status;
     }
 
+    public Message(){}
+
     public String getMessage() {
         return this.message;
     }

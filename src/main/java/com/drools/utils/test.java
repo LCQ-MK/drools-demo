@@ -2,19 +2,11 @@ package com.drools.utils;
 
 import com.drools.entity.Message;
 import com.drools.entity.People;
-import com.sun.xml.internal.ws.addressing.v200408.MemberSubmissionWsaServerTube;
-import org.drools.core.RuleBaseConfiguration;
-import org.drools.core.WorkingMemory;
-import org.drools.core.audit.event.RuleBaseLogEvent;
-import org.drools.core.marshalling.impl.ProtobufMessages;
-import org.drools.core.marshalling.impl.RuleBaseNodes;
-import org.drools.core.rule.FactType;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
-import org.kie.internal.KnowledgeBaseFactory;
 
 import java.util.ArrayList;
 
@@ -31,9 +23,6 @@ public class test {
         KieContainer kieContainer = kieServices.getKieClasspathContainer();
         //建立KieSession到规则文件的通信管道
         KieSession kSession = kieContainer.newKieSession("ksession-rules");
-
-//        ProtobufMessages.KnowledgeBase knowledgeBase = KnowledgeBaseFactory().new
-        FactType peopleType = kSession.getFactType();
 
         //初始化全局变量messageGlobal
         kSession.setGlobal("peopleGlobal",new ArrayList<People>());
