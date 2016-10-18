@@ -1,0 +1,54 @@
+package org.drools.example 
+
+import com.drools.entity.Message
+import com.drools.entity.People
+
+rule "Hello World"
+when
+    $message : Message( status == Message.HELLO, printMsg : message )   
+then
+ 	System.out.println("\nHello World -------------------------------------");
+	//系统输出和重新设置实体属性
+	System.out.println("rule \"Hello World printMsg\": " + printMsg );
+
+ 	Message message2=new Message("rule \"Hello World printMsg\": I am message2 and I an created in rule Hello World!", 2);
+	System.out.println(message2.getMessage());
+
+	$message.setMessage( "Goodbye~" );
+	$message.setStatus( Message.GOODBYE );
+	//更新实体，会重新触发规则
+	update( $message );
+end
+
+rule "GoodBye"
+when
+    
+    $message : Message( status == Message.GOODBYE, printMsg : message )   
+then
+	System.out.println("\nGoodBye -----------------------------------------");
+	System.out.println("rule \"GoodBye printMsg\": " + printMsg);
+ end
+
+rule "ADD"
+when
+    
+    $message : Message( status == Message.HELLO, printMsg : message )   
+then
+end
+
+import com.drools.entity.Message
+
+rule "ADD"
+when
+    
+    $message : Message( status == Message.HELLO, printMsg : message )   
+then
+end
+
+rule "Age Filter"
+    when
+        $p : People(age > 20);
+    then
+        name = $p.getName();
+        System.out.println("rule \"Age Filter printMsg\" 年龄大于20的人：" + name);
+    end
